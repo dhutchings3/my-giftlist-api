@@ -9,7 +9,10 @@
     "predeploy": "npm audit",
     "deploy": "git push heroku master",
     "dev": "nodemon src/server.js",
-    "migrate": "postgrator --config postgrator-config.js"
+    "migrate": "postgrator --config postgrator-config.js",
+    "seed": "psql -U postgres -d my_giftlist_test -f ./seeds/seed.giftlists.sql",
+    "truncate": "psql -U postgres -d my_giftlist_test -f ./seeds/trunc.giftlists.sql",
+    "dropTables": "psql -U postgres -d my_giftlist_test -f ./seeds/drop.tables.sql"
   },
   "keywords": [],
   "engines": {
@@ -22,13 +25,17 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
+    "knex": "^0.20.4",
     "morgan": "^1.9.1",
+    "pg": "^7.14.0",
+    "postgrator": "^3.11.0",
     "prettier": "^1.19.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.1",
     "nodemon": "^1.19.4",
+    "postgrator-cli": "^3.2.0",
     "supertest": "^4.0.2"
   }
 }
