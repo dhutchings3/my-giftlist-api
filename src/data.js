@@ -42,19 +42,19 @@ module.exports = {
       listCode: "password",
       items: [
         {
+          item: "Apple TV"
+        },
+        {
           item: "iPad"
         },
         {
-          item: "Away Carry-on"
+          item: "Perfume"
         },
         {
-          item: "Yeti Coffee Mug"
+          item: "Slippers"
         },
         {
-          item: "Nintendo Switch"
-        },
-        {
-          item: "Pearl Earrings"
+          item: "Yeti Mug"
         }
       ]
     }
