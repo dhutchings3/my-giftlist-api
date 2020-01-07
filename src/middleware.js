@@ -1,5 +1,5 @@
 const listsService = require("../src/lists/lists-service");
-const express = require("express");
+
 function validateBodyTypes(req, res, next) {
   const possibleStringKeys = [
     "name",
@@ -81,23 +81,20 @@ function keyValidator(requiredKeys = []) {
 }
 
 function validateUserExists(req, res, next) {
-  if (req.params.user_name) {
-    if (!usersService.userExists(req.params.user_name)) {
-      let err = new Error("User does not exist");
-      err.status = 404;
-      return next(err);
-    }
-  }
+  const userName = req.params.user_name
+    ? req.params.user_name
+    : req.body.username;
 
-  if (req.body.newUser) {
-    if (!usersService.userExists(req.body.newUser)) {
+  userService.userExists(req.app.get("db"), userName).then(id => {
+    if (!id.length) {
       let err = new Error("User does not exist");
       err.status = 404;
       return next(err);
     }
-  }
+  });
   next();
 }
+
 function validateListExists(req, res, next) {
   const list = req.params.list_code ? req.params.list_code : req.body.listcode;
 
@@ -107,9 +104,9 @@ function validateListExists(req, res, next) {
       err.status = 404;
       return next(err);
     }
-  });
 
-  next();
+    return next();
+  });
 }
 
 function serverError(err, req, res, next) {

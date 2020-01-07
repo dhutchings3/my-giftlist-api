@@ -36,7 +36,7 @@ listsRouter
       res.json(listsService.getList(listcode));
     }
   );
-listRouter
+listsRouter
   .route("/:list_code/list")
   .get(validateListExists, (req, res, next) => {
     res.json(listService.getlist(req.params.list_code));
@@ -63,5 +63,5 @@ function validateListNoExists(req, res, next) {
   next();
 }
 
-listssRouter.use(serverError);
+listsRouter.use(serverError);
 module.exports = listsRouter;

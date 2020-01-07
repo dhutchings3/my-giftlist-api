@@ -7,7 +7,7 @@ require("dotenv").config();
 describe.only("Users Endpoints", function() {
   let db;
   const users = seedData.users();
-  const lists = seedData.teams();
+  const lists = seedData.lists();
   before("make knex instance", () => {
     console.log(process.env.TEST_DB_URL);
     db = knex({
@@ -20,6 +20,14 @@ describe.only("Users Endpoints", function() {
   after("disconnect from db", () => db.destroy());
   before("clean the tables", () => cleanTables(db));
   afterEach("clean up", () => cleanTables(db));
+
+  beforeEach("seed tables", () => {
+    return helpers.seedAllTables(
+      db,
+      users,
+      lists,
+    );
+  });
 
   describe.skip(`Get /api/lists/`, () => {
     context(`Given no username`, () => {

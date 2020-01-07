@@ -5,11 +5,11 @@ const cors = require("cors");
 const { CLIENT_ORIGIN } = require("./config");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
+
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
+const listsRouter = require("./lists/lists");
+const usersRouter = require("./users/users");
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
@@ -20,6 +20,13 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
+app.use("/api/lists", listsRouter);
+app.use("/api/users", usersRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
+});
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

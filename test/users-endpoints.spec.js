@@ -64,7 +64,7 @@ describe.only("Users Endpoints", function() {
 
     const newUserWithId = [
       {
-        id: 22,
+        id: 2,
         username: "MikeObs",
         password: "password",
         name: "Mike"
@@ -153,28 +153,6 @@ describe.only("Users Endpoints", function() {
       return supertest(app)
         .get(`/api/users/${testUser.username}/lists`)
         .expect(userLists);
-    });
-  });
-
-  describe(`POST /api/users/:user_name/lists`, () => {
-    beforeEach("insert users and lists", () => {
-      return helpers.seedUsers(db, users);
-    });
-    beforeEach("insert users and lists", () => {
-      return helpers.seedTeams(db, lists);
-    });
-
-    const body = {
-      teamcode: password,
-      nickname: newUser.nickname,
-      password: newUser.password
-    };
-
-    it("responds with users list", () => {
-      return supertest(app)
-        .post(`/api/users/${newuser.username}/lists`)
-        .send(body)
-        .expect(teams[0]);
     });
   });
 });

@@ -6,6 +6,7 @@ const { validateBodyTypes } = require("../middleware");
 const { keyValidator } = require("../middleware");
 const { serverError } = require("../middleware");
 const { validateListExists } = require("../middleware");
+const { requireAuth } = require("../basic-auth");
 //usersRouter.use(validateParamTypes);
 usersRouter.use(jsonBodyParser);
 usersRouter.use(validateBodyTypes);
