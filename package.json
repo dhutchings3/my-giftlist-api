@@ -10,7 +10,7 @@
     "deploy": "git push heroku master",
     "dev": "nodemon src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
-    "seed": "psql -U postgres -d my_giftlist_test -f ./seeds/seed.giftlists.sql",
+    "seed": "psql -U postgres -d my_giftlist_test -f ./seeds/seed.lists.sql",
     "truncate": "psql -U postgres -d my_giftlist_test -f ./seeds/trunc.giftlists.sql",
     "dropTables": "psql -U postgres -d my_giftlist_test -f ./seeds/drop.tables.sql"
   },

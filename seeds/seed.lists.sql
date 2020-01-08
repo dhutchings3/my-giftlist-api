@@ -1,22 +1,14 @@
-BEGIN;
-
-TRUNCATE
-  giftlist_users,
-  giftlist_lists,
-  giftlist_items
-  RESTART IDENTITY CASCADE;
-
-insert into giftlist_users (username, name, password) values 
+INSERT INTO giftlist_users (username, name, password) VALUES
 ("Dee","Danielle","password"),
-("Mike","Michael","password",
+("Mike","Michael","password"),
 ("Ash","Ashley","password"),
 ("Steph","Stephanie","password"),
 ("Hal","Haley","password"),
 ("RJ","Ryan","password"),
-("Pat","Patrick","password")
+("Pat","Patrick","password");
   
-insert into giftlist_lists (listname, listcode, user_id)
-values
+INSERT INTO giftlist_lists (listname, listcode, user_id)
+VALUES
 ('Dees Christmas List', 'password', 1),
 ('Mikes Christmas List', 'password', 2),
 ('Ashs Christmas List', 'password', 3),
@@ -25,8 +17,8 @@ values
 ('RJs Christmas List', 'password', 6),
 ('Pats Christmas List', 'password', 7);
 
-insert into giftlist_items (name, listid)
-values
+INSERT INTO giftlist_items (name, listid)
+VALUES
 ("Apple TV", 1),
 ("iPad", 1),
 ("Perfume", 1),
@@ -61,6 +53,4 @@ values
 ("Cologne", 7),
 ("Slippers",7),
 ("Yeti Mug", 7),
-("Automatic Car Starter", 7)
-
-commit;
+("Automatic Car Starter", 7);
