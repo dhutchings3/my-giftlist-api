@@ -9,7 +9,9 @@ describe.only("Users Endpoints", function() {
   let db;
   const users = seedData.users();
   const lists = seedData.lists();
-
+  const items = seedData.items();
+  const expectedUsers = seedData.usersWithId();
+  
   const testUser = {
     username: "dhutch3",
     name: "Danielle",
@@ -122,7 +124,7 @@ describe.only("Users Endpoints", function() {
       return helpers.seedUsers(db, users);
     });
     beforeEach("insert users and lists", () => {
-      return helpers.seedLists(db, teams);
+      return helpers.seedLists(db, lists, items);
     });
 
     const userLists = [

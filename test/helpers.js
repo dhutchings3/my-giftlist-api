@@ -4,20 +4,21 @@ const helpers = {
       return db.into("giftlist_users").insert(users);
     },
   
-    seedTeams(db, lists) {
+    seedLists(db, lists) {
       console.log("seedLists ran");
       return db.into("giftlis_lists").insert(lists);
     },
   
-    seedLocations(db, locations) {},
   
     seedAllTables(
       db,
       users,
-      lists
+      lists,
+      items,
     ) {
       seedUsers(db, users);
       seedLists(db, lists);
+      seedItems(db, items)
     }
   };
   

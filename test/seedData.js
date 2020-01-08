@@ -52,9 +52,9 @@ const seedData = {
       { id: 1, username: "dhutch3", password: "password", name: "Danielle" },
       { id: 2, username: "MikeObs", password: "password", name: "Mike" },
       { id: 3, username: "Ash", password: "password", name: "Ashley" },
-      { id: 4, username: "Deandra", password: "password", name: "Dee" },
-      { id: 5, username: "Charlie", password: "password", name: "Charlie" },
-      { id: 6, username: "Mac", password: "password", name: "Mac" },
+      { id: 4, username: "Steph", password: "password", name: "Stephanie" },
+      { id: 5, username: "Pat", password: "password", name: "Patrick" },
+      { id: 6, username: "Sam", password: "password", name: "Samantha" },
       { id: 7, username: "Demo", password: "password", name: "Demo" },
       {
         id: 8,
@@ -67,6 +67,26 @@ const seedData = {
         username: "Test3",
         password: "password",
         name: "Testing user"
+      }
+    ];
+  },
+
+  items() {
+    return [
+      {
+        item: "iPad"
+      },
+      {
+        item: "Away Carry-on"
+      },
+      {
+        item: "Yeti Coffee Mug"
+      },
+      {
+        item: "Nintendo Switch"
+      },
+      {
+        item: "Pearl Earrings"
       }
     ];
   }
