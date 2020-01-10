@@ -1,12 +1,100 @@
-const helpers = {
+  const helpers = {
     seedUsers(db, users) {
-      console.log("seedUsers Ran");
       return db.into("giftlist_users").insert(users);
     },
   
     seedLists(db, lists) {
-      console.log("seedLists ran");
-      return db.into("giftlis_lists").insert(lists);
+      return db.into("giftlist_lists").insert(lists);
+    },
+
+    seedItems(db, items) {
+      return db.into("giftlist_items").insert(items);
+    },
+
+    expectedList() {
+      return {
+        id: 1,
+        listcode: "password",
+        listname: "Danielle's Christmas List",
+        user_id: 1
+      };
+    },
+
+    newList() {
+      return {
+        id: 11,
+        listcode: "password",
+        listname: "Colleen's Christmas List",
+        user_id: 11
+      };
+    },
+
+    testList() {
+      return {
+        id: 14,
+        listcode: "password",
+        listname: "Cody's Christmas List",
+        user_id: 14
+      };
+
+    },
+
+    expectedLists() {
+      return [
+        {
+          id: 1,
+          listcode: 'password',
+          listname: 'Dees Christmas List',
+          user_id: 1
+        },
+        {
+          id: 2,
+          listcode: 'password',
+          listname: 'Mikes Christmas List',
+          user_id: 2
+        },
+        {
+        id: 3,
+          listcode: 'password',
+          listname: 'Ashs Christmas List',
+          user_id: 3
+        },
+        {
+          id: 4,
+            listcode: 'password',
+            listname: 'Stephs Christmas List',
+            user_id: 4
+        },
+        {
+          id: 5,
+            listcode: 'password',
+            listname: 'Hals Christmas List',
+            user_id: 5
+        },
+        {
+          id: 6,
+            listcode: 'password',
+            listname: 'RJs Christmas List',
+            user_id: 6
+        },
+        {
+          id: 7,
+            listcode: 'password',
+            listname: 'Pats Christmas List',
+            user_id: 7
+        },
+      ]
+    },
+
+    expectedItems() {
+      return [
+        { name: "Apple TV" },
+        { name: "iPhone" },
+        { name: "slippers"}
+      ];
+    },
+    testUser() {
+      return { username: "dhutch3", password: "password", nickname: "Danielle" };
     },
   
   
@@ -16,12 +104,15 @@ const helpers = {
       lists,
       items,
     ) {
-      seedUsers(db, users);
-      seedLists(db, lists);
-      seedItems(db, items)
+      return this.seedUsers(db, users).then(() => {
+        return this.seedLists(db, lists).then(() => {
+          return this.seedItems(db, items).then(() => {
+          })
+        })
+      })
     }
   };
-  
+
   function cleanTables(db) {
     return db.raw(
       `TRUNCATE 

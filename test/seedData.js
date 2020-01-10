@@ -25,24 +25,9 @@ const seedData = {
     return [
       {
         id: 1,
-        listName: "Danielle's Christmas List",
-        items: [
-          {
-            item: "iPad"
-          },
-          {
-            item: "Away Carry-on"
-          },
-          {
-            item: "Yeti Coffee Mug"
-          },
-          {
-            item: "Nintendo Switch"
-          },
-          {
-            item: "Pearl Earrings"
-          }
-        ]
+        listcode: "password",
+        listname: "Danielle's Christmas List",
+        user_id: 1
       }
     ];
   },
@@ -74,19 +59,24 @@ const seedData = {
   items() {
     return [
       {
-        item: "iPad"
+        name: "iPad",
+        list_id: 1
       },
       {
-        item: "Away Carry-on"
+        name: "Away Carry-on",
+        list_id: 1
       },
       {
-        item: "Yeti Coffee Mug"
+        name: "Yeti Coffee Mug",
+        list_id: 1
       },
       {
-        item: "Nintendo Switch"
+        name: "Nintendo Switch",
+        list_id: 1
       },
       {
-        item: "Pearl Earrings"
+        name: "Pearl Earrings",
+        list_id: 1
       }
     ];
   }

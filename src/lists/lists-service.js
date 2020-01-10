@@ -1,31 +1,29 @@
-const express = require("express");
-const store = require("../store");
-// const usersService = require("../users/users-service");
-const listsService = {
-  doesExist(knex, listcode) {
-    return knex
-      .select("id")
-      .from("giftlist_users")
-      .where({ listcode: listcode });
-  },
+const ListsService = {
   getAllLists(knex) {
-    return knex.select("*").from("giftlist_lists");
+    return knex.select('*').from('giftlist_lists')
   },
-  getList(listcode) {
-    return store.lists.find(list => list.listcode === listcode);
+  insertList(knex, newList) {
+    return knex
+      .insert(newList)
+      .into('giftlist_lists')
+      .returning('*')
+      .then(rows => {
+        return rows[0]
+      })
   },
-  userExists(username) {
-    return store.users.map(user => user.username).includes(username);
+  getById(knex, id) {
+    return knex.from('giftlist_lists').select('*').where('id', id).first()
   },
-  postNewList(listObject) {
-    store.lists.push(listObject);
+  deleteList(knex, id) {
+    return knex('giftlist_lists')
+      .where({ id })
+      .delete()
   },
-  addToList(item) {
-    const newItem = {
-      item: item.name
-    };
-    store.lists.find(list => list.listcode === listcode).items.push(newItem);
-  }
-};
+  updateList(knex, id, newListFields) {
+    return knex('giftlist_lists')
+      .where({ id })
+      .update(newListFields)
+  },
+}
 
-module.exports = listsService;
+module.exports = ListsService

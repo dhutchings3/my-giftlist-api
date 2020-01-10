@@ -1,28 +1,24 @@
-require("dotenv").config();
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const { CLIENT_ORIGIN } = require("./config");
-const helmet = require("helmet");
-const { NODE_ENV } = require("./config");
+require('dotenv').config()
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
+const helmet = require('helmet')
+const { NODE_ENV } = require('./config')
+const listsRouter = require('./lists/lists-router')
+const usersRouter = require('./users/users-router')
+const itemsRouter = require('./items/items-router')
 
-const app = express();
+const app = express()
 
-const listsRouter = require("./lists/lists");
-const usersRouter = require("./users/users");
-
-const morganOption = NODE_ENV === "production" ? "tiny" : "common";
-
-app.use(morgan(morganOption));
-app.use(helmet());
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN
-  })
-);
+app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
+  skip: () => NODE_ENV === 'test'
+}))
+app.use(cors())
+app.use(helmet())
 
 app.use("/api/lists", listsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/items", itemsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
