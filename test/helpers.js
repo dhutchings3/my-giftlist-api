@@ -15,7 +15,6 @@
       return {
         id: 1,
         listcode: "password",
-        listname: "Danielle's Christmas List",
         user_id: 1
       };
     },
@@ -24,7 +23,6 @@
       return {
         id: 11,
         listcode: "password",
-        listname: "Colleen's Christmas List",
         user_id: 11
       };
     },
@@ -33,7 +31,6 @@
       return {
         id: 14,
         listcode: "password",
-        listname: "Cody's Christmas List",
         user_id: 14
       };
 
@@ -44,43 +41,36 @@
         {
           id: 1,
           listcode: 'password',
-          listname: 'Dees Christmas List',
           user_id: 1
         },
         {
           id: 2,
           listcode: 'password',
-          listname: 'Mikes Christmas List',
           user_id: 2
         },
         {
         id: 3,
           listcode: 'password',
-          listname: 'Ashs Christmas List',
           user_id: 3
         },
         {
           id: 4,
             listcode: 'password',
-            listname: 'Stephs Christmas List',
             user_id: 4
         },
         {
           id: 5,
             listcode: 'password',
-            listname: 'Hals Christmas List',
             user_id: 5
         },
         {
           id: 6,
             listcode: 'password',
-            listname: 'RJs Christmas List',
             user_id: 6
         },
         {
           id: 7,
             listcode: 'password',
-            listname: 'Pats Christmas List',
             user_id: 7
         },
       ]
