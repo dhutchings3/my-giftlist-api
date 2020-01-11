@@ -7,15 +7,15 @@ INSERT INTO giftlist_users (username, name, password) VALUES
 ("RJ","Ryan","password"),
 ("Pat","Patrick","password");
   
-INSERT INTO giftlist_lists (listname, listcode, user_id)
+INSERT INTO giftlist_lists (listname, user_id)
 VALUES
-('Dees Christmas List', 'password', 1),
-('Mikes Christmas List', 'password', 2),
-('Ashs Christmas List', 'password', 3),
-('Stephs Christmas List', 'password', 4),
-('Hals Christmas List', 'password', 5),
-('RJs Christmas List', 'password', 6),
-('Pats Christmas List', 'password', 7);
+('Dees Christmas List', 1),
+('Mikes Christmas List', 2),
+('Ashs Christmas List', 3),
+('Stephs Christmas List', 4),
+('Hals Christmas List', 5),
+('RJs Christmas List', 6),
+('Pats Christmas List', 7);
 
 INSERT INTO giftlist_items (name, listid)
 VALUES

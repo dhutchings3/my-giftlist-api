@@ -8,7 +8,6 @@ const jsonParser = express.json()
 
 const serializeList = list => ({
   id: list.id,
-  listcode: xss(list.listcode),
   listname: xss(list.listname),
   user_id: list.user_id,
 })
@@ -24,8 +23,10 @@ listsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { listname, listcode, user_id } = req.body
-    const newList = { listname, listcode, user_id }
+    const { listname, user_id } = req.body
+    console.log(req.body.listname)
+    const newList = { listname, user_id }
+    console.log(newList.listname)
 
     for (const [key, value] of Object.entries(newList))
       if (value == null)
@@ -78,14 +79,14 @@ listsRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    const { listname, listcode, user_id } = req.body
-    const listToUpdate = { listname, listcode, user_id }
+    const { listname, user_id } = req.body
+    const listToUpdate = { listname, user_id }
 
     const numberOfValues = Object.values(listToUpdate).filter(Boolean).length
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain either 'listname', 'listcode'`
+          message: `Request body must contain 'listname'`
         }
       })
 

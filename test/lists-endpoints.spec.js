@@ -68,13 +68,12 @@ describe('Lists Endpoints', function() {
           })
       })
 
-      it('removes XSS attack listcode', () => {
+      it('removes XSS attack listname', () => {
         return supertest(app)
           .get(`/api/lists`)
           .expect(200)
           .expect(res => {
             expect(res.body[0].listname).to.eql(expectedList.listname)
-            expect(res.body[0].listcode).to.eql(expectedList.listcode)
           })
       })
     })
@@ -126,7 +125,6 @@ describe('Lists Endpoints', function() {
     it(`creates a list, responding with 201 and the new list`, () => {
       const newList = {
         listname: 'Test new list',
-        listcode: 'Test new list code..'
       }
       return supertest(app)
         .post('/api/lists')
@@ -134,7 +132,6 @@ describe('Lists Endpoints', function() {
         .expect(201)
         .expect(res => {
           expect(res.body.listname).to.eql(newList.listname)
-          expect(res.body.listcode).to.eql(newList.listcode)
           expect(res.body).to.have.property('id')
           expect(res.headers.location).to.eql(`/api/lists/${res.body.id}`)
           expect(actual).to.eql(expected)
@@ -146,12 +143,11 @@ describe('Lists Endpoints', function() {
         )
     })
 
-    const requiredFields = ['listname', 'listcode' ]
+    const requiredFields = ['listname']
 
     requiredFields.forEach(field => {
       const newList = {
         listname: 'Test new list',
-        listcode: 'Test new list listcode...'
       }
 
       it(`responds with 400 and an error message when the '${field}' is missing`, () => {
@@ -166,7 +162,7 @@ describe('Lists Endpoints', function() {
       })
     })
 
-    it('removes XSS attack listcode from response', () => {
+    it('removes XSS attack listname from response', () => {
       const { maliciousList, expectedList } = makeMaliciousList()
       return supertest(app)
         .post(`/api/lists`)
@@ -174,7 +170,6 @@ describe('Lists Endpoints', function() {
         .expect(201)
         .expect(res => {
           expect(res.body.listname).to.eql(expectedList.listname)
-          expect(res.body.listcode).to.eql(expectedList.listcode)
         })
     })
   })
@@ -248,7 +243,6 @@ describe('Lists Endpoints', function() {
         const idToUpdate = 2
         const updateList = {
           listname: 'updated list listname',
-          listcode: 'updated list listcode',
         }
         const expectedList = {
           ...testLists[idToUpdate - 1],
@@ -272,7 +266,7 @@ describe('Lists Endpoints', function() {
           .send({ irrelevantField: 'foo' })
           .expect(400, {
             error: {
-              message: `Request body must contain either 'listname', 'listcode'`
+              message: `Request body must contain 'listname'`
             }
           })
       })
