@@ -32,6 +32,7 @@ listsRouter
           error: { message: `Missing '${key}' in request body` }
         })
     newList.listname = listname
+    console.log(newList)
     ListsService.insertList(
       req.app.get('db'),
       newList

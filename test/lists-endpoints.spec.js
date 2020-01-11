@@ -125,6 +125,7 @@ describe('Lists Endpoints', function() {
     it(`creates a list, responding with 201 and the new list`, () => {
       const newList = {
         listname: 'Test new list',
+        user_id: 1,
       }
       return supertest(app)
         .post('/api/lists')
@@ -134,7 +135,6 @@ describe('Lists Endpoints', function() {
           expect(res.body.listname).to.eql(newList.listname)
           expect(res.body).to.have.property('id')
           expect(res.headers.location).to.eql(`/api/lists/${res.body.id}`)
-          expect(actual).to.eql(expected)
         })
         .then(res =>
           supertest(app)
