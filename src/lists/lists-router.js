@@ -24,9 +24,7 @@ listsRouter
   })
   .post(jsonParser, (req, res, next) => {
     const { listname, user_id } = req.body
-    console.log(req.body.listname)
     const newList = { listname, user_id }
-    console.log(newList.listname)
 
     for (const [key, value] of Object.entries(newList))
       if (value == null)
