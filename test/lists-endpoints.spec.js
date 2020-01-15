@@ -1,7 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const { makeListsArray, makeMaliciousList } = require('./lists.fixtures')
-const { makeUsersArray } = require('./users.fixtures')
+const { makeListsArray, makeUsersArray } = require('./test-helpers')
 
 describe('Lists Endpoints', function() {
   let db
@@ -10,7 +9,7 @@ describe('Lists Endpoints', function() {
 
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.TEST_DATABASE_URL,
     })
     app.set('db', db)
 
@@ -50,31 +49,6 @@ describe('Lists Endpoints', function() {
         return supertest(app)
           .get('/api/lists')
           .expect(200, testLists)
-      })
-    })
-
-    context(`Given an XSS attack list`, () => {
-      const testUsers = makeUsersArray();
-      const { maliciousList, expectedList } = makeMaliciousList()
-
-      beforeEach('insert malicious list', () => {
-        return db
-          .into('giftlist_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('giftlist_lists')
-              .insert([ maliciousList ])
-          })
-      })
-
-      it('removes XSS attack listname', () => {
-        return supertest(app)
-          .get(`/api/lists`)
-          .expect(200)
-          .expect(res => {
-            expect(res.body[0].listname).to.eql(expectedList.listname)
-          })
       })
     })
   })

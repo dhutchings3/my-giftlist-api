@@ -5,14 +5,13 @@
   "main": "src/server.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
-    "start": "node src/server.js",
-    "predeploy": "npm audit",
-    "deploy": "git push heroku master",
     "dev": "nodemon src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
-    "seed": "psql -U postgres -d my_giftlist_test -f ./seeds/seed.lists.sql",
-    "truncate": "psql -U postgres -d my_giftlist_test -f ./seeds/trunc.giftlists.sql",
-    "dropTables": "psql -U postgres -d my_giftlist_test -f ./seeds/drop.tables.sql"
+    "migrate:test": "env NODE_ENV=test npm run migrate",
+    "migrate:production": "env SSL=true DATABASE_URL=$(heroku config:get DATABASE_URL) npm run migrate",
+    "start": "node src/server.js",
+    "predeploy": "npm audit && npm run migrate:production",
+    "deploy": "git push heroku master"
   },
   "keywords": [],
   "engines": {
@@ -21,6 +20,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.7",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

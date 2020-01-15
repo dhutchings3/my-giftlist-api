@@ -7,18 +7,22 @@ const { NODE_ENV } = require('./config')
 const listsRouter = require('./lists/lists-router')
 const usersRouter = require('./users/users-router')
 const itemsRouter = require('./items/items-router')
+const authRouter = require('./auth/auth-router')
 
 const app = express()
 
-app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
-  skip: () => NODE_ENV === 'test'
-}))
+const morganOption = (NODE_ENV === 'production'
+  ? 'tiny' 
+  : 'common')
+
+app.use(morgan(morganOption))
 app.use(cors())
 app.use(helmet())
 
 app.use("/api/lists", listsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
+app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
