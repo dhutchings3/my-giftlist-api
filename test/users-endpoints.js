@@ -59,7 +59,7 @@ describe('Users Endpoints', function() {
     helpers.cleanTables(db)
     return db('giftlist_users')
         .then(() => {
-            return db.into('giflist_users').insert(testUsers)
+            return db.into('giftlist_users').insert(testUsers)
         })
   })
 

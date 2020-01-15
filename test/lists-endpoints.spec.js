@@ -135,17 +135,6 @@ describe('Lists Endpoints', function() {
           })
       })
     })
-
-    it('removes XSS attack listname from response', () => {
-      const { maliciousList, expectedList } = makeMaliciousList()
-      return supertest(app)
-        .post(`/api/lists`)
-        .send(maliciousList)
-        .expect(201)
-        .expect(res => {
-          expect(res.body.listname).to.eql(expectedList.listname)
-        })
-    })
   })
 
   describe(`DELETE /api/lists/:list_id`, () => {
