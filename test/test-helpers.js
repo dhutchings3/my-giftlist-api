@@ -77,8 +77,7 @@ function cleanTables(db) {
       `TRUNCATE
         giftlist_users,
         giftlist_lists,
-        giftlist_items,
-        CASCADE      
+        giftlist_items  
         `
     )
   }

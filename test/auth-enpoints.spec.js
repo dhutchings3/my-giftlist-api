@@ -59,8 +59,7 @@ describe('Auth Endpoints', function() {
       `TRUNCATE
         giftlist_users,
         giftlist_lists,
-        giftlist_items,
-        CASCADE
+        giftlist_items
       `
     )
     .then(() => {
