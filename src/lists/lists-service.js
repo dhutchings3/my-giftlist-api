@@ -4,7 +4,7 @@ const knex = require("knex");
 const ListsService = {
 
   getAllListsItems(knex) {
-    return knex.select('*').from('giftlist_lists', 'giftlist_items').where('id', list_id)
+    return knex.select('*').from('giftlist_lists').where('id', list_id)
   },
 
   getById(db, id) {

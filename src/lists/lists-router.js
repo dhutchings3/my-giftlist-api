@@ -16,8 +16,8 @@ listsRouter
       .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { item_id, name } = req.body
-    const itemToAdd = { item_id, name }
+    const { list_id, name } = req.body
+    const itemToAdd = { list_id, name }
 
     for (const [key, value] of Object.entries(itemToAdd)) {
       if (value == null) {
@@ -27,33 +27,33 @@ listsRouter
       }
     }
 
-    itemToAdd.user_id = req.user.id
+    itemToAdd.list_id = req.list.id
 
     ListsService.addToList(req.app.get('db'), itemToAdd)
-      .then(item => {
-        return ListsService.getById(req.app.get('db'), item.id)
+      .then(list => {
+        return ListsService.getById(req.app.get('db'), list.id)
       })
-      .then(item => {
+      .then(list => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${item.id}`))
-          .json(item)
+          .location(path.posix.join(req.originalUrl, `/${list.id}`))
+          .json(list)
       })
       .catch(next)
   })
 
 
-  listsRouter
-    .route('/:lists_item_id')
-    .all(requireAuth)
-    .all(checkListsItemExists)
-    .get((req, res, next) => {
-      ListsService.getById(req.app.get('db'), req.params.lists_item_id)
-      .then(items => {
-        res.json(items)
-      })
-      .catch(next)
-    })
+  // listsRouter
+  //   .route('/:lists_item_id')
+  //   .all(requireAuth)
+  //   .all(checkListsItemExists)
+  //   .get((req, res, next) => {
+  //     ListsService.getById(req.app.get('db'), req.params.lists_item_id)
+  //     .then(items => {
+  //       res.json(items)
+  //     })
+  //     .catch(next)
+  //   })
 
     .patch(jsonBodyParser, (req, res, next) => {
       const { item } = req.body
