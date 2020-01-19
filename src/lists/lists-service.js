@@ -3,8 +3,8 @@ const knex = require("knex");
 
 const ListsService = {
 
-  getAllListsItems(db) {
-    return db.select('*').from('giftlist_items').where(user_id, list_id)
+  getAllListsItems(knex) {
+    return knex.select('*').from('giftlist_lists', 'giftlist_items').where('id', list_id)
   },
 
   getById(db, id) {

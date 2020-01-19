@@ -66,109 +66,144 @@ function makeListsArray() {
   function makeItemsArray() {
     return [
       { id: 1,
-        name: 'Apple TV'
+        name: 'Apple TV',
+        list_id: 1
       },
       { id: 1,
-        name: 'Perfume'
+        name: 'Perfume',
+        list_id: 1
       },
       { id: 1,
-        name: 'Slippers'
+        name: 'Slippers',
+        list_id: 1
       },
       { id: 1,
-        name: 'Yeti Muh'
+        name: 'Yeti Mug',
+        list_id: 1
       },
       { id: 2,
-        name: 'iPad'
+        name: 'iPad',
+        list_id: 2
       },
       { id: 2,
-        name: 'Xbox games'
+        name: 'Xbox games',
+        list_id: 2
       },
       { id: 2,
-        name: 'Portable phone charger'
+        name: 'Portable phone charger',
+        list_id: 2
       },
       { id: 2,
-        name: 'Leather wallet'
+        name: 'Leather wallet',
+        list_id: 2
       },
       { id: 2,
-        name: 'Slippers'
+        name: 'Slippers',
+        list_id: 2
       },
       { id: 2,
-        name: 'iPhone case'
+        name: 'iPhone case',
+        list_id: 2
       },
       { id: 3,
-        name: 'iPhone case'
+        name: 'iPhone case',
+        list_id: 3
       },
       { id: 3,
-        name: 'iPhone case'
+        name: 'iPhone case',
+        list_id: 3
       },
       { id: 3,
-        name: 'Fleece Pajamas'
+        name: 'Fleece Pajamas',
+        list_id: 3
       },
       { id: 3,
-        name: 'Nespresso Coffee Maker'
+        name: 'Nespresso Coffee Maker',
+        list_id: 3
       },
       { id: 3,
-        name: 'Winter Boots'
+        name: 'Winter Boots',
+        list_id: 3
       },
       { id: 4,
-        name: 'iPad'
+        name: 'iPad',
+        list_id: 4
       },
       { id: 4,
-        name: 'Heated Blanket'
+        name: 'Heated Blanket',
+        list_id: 4
       },
       { id: 4,
-        name: 'Running Shoes'
+        name: 'Running Shoes',
+        list_id: 4
       },
       { id: 4,
-        name: 'Air Fryer'
+        name: 'Air Fryer',
+        list_id: 4
       },
       { id: 4,
-        name: 'Headphones'
+        name: 'Headphones',
+        list_id: 4
       },
       { id: 5,
-        name: 'Gold necklace'
+        name: 'Gold necklace',
+        list_id: 5
       },
       { id: 5,
-        name: 'Sweater'
+        name: 'Sweater',
+        list_id: 5
       },
       { id: 5,
-        name: 'Purse'
+        name: 'Purse',
+        list_id: 5
       },
       { id: 5,
-        name: 'Perfume'
+        name: 'Perfume',
+        list_id: 5
       },
       { id: 5,
-        name: 'Yeti Mug'
+        name: 'Yeti Mug',
+        list_id: 5
       },
       { id: 6,
-        name: 'iPhone'
+        name: 'iPhone',
+        list_id: 6
       },
       { id: 6,
-        name: 'Leather wallet'
+        name: 'Leather wallet',
+        list_id: 6
       },
       { id: 6,
-        name: 'Slippers'
+        name: 'Slippers',
+        list_id: 6
       },
       { id: 6,
-        name: 'Winter Coat'
+        name: 'Winter Coat',
+        list_id: 6
       },
       { id: 6,
-        name: 'Nintendo Switch'
+        name: 'Nintendo Switch',
+        list_id: 6
       },
       { id: 7,
-        name: 'Luggage'
+        name: 'Luggage',
+        list_id: 7
       },
       { id: 7,
-        name: 'Cologne'
+        name: 'Cologne',
+        list_id: 7
       },
       { id: 7,
-        name: 'Slippers'
+        name: 'Slippers',
+        list_id: 7
       },
       { id: 7,
-        name: 'Yeti Mug'
+        name: 'Yeti Mug',
+        list_id: 7
       },
       { id: 7,
-        name: 'Automatic Car Starter'
+        name: 'Automatic Car Starter',
+        list_id: 7
       },
     ]
   }
