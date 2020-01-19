@@ -1,29 +1,54 @@
+// const xss = require('xss')
+const knex = require("knex");
+
 const ListsService = {
-  getAllLists(knex) {
-    return knex.select('*').from('giftlist_lists')
+
+  getAllListsItems(db) {
+    return db.select('*').from('giftlist_items').where(user_id, list_id)
   },
-  insertList(knex, newList) {
-    return knex
-      .insert(newList)
-      .into('giftlist_lists')
+
+  getById(db, id) {
+    return ListsService.getAllListsItems(db)
+      .where('lists.id', id)
+      .first()
+  },
+
+  addToLists(db, itemToAdd) {
+    return db
+      .insert(itemToAdd)
+      .into('giftlist_items')
       .returning('*')
       .then(rows => {
         return rows[0]
       })
   },
-  getById(knex, id) {
-    return knex.from('giftlist_lists').select('*').where('id', id).first()
+
+  insertItem(db, newItem) {
+    return db
+      .insert(newItem)
+      .into('giftlist_items')
   },
-  deleteList(knex, id) {
-    return knex('giftlist_lists')
-      .where({ id })
+
+  updateListsItem(db, id, newItemFields) {
+    return db('giftlist_items')
+      .where('id', id)
+      .update(newItemFields)
+  },
+
+  deleteListsItem(db, id) {
+    return ListsService.getById(db, id)
+      .where('id', id)
       .delete()
   },
-  updateList(knex, id, newListFields) {
-    return knex('giftlist_lists')
-      .where({ id })
-      .update(newListFields)
+
+  serializeListsItem(listsItem) {
+    const { name } = listsItem
+    return {
+      id: listsItem.id,
+      name: listsItem.name,
+    }
   },
+
 }
 
 module.exports = ListsService

@@ -5,14 +5,14 @@ const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*
 const UsersService = {
   hasUserWithUsername(db, username) {
     return db('giftlist_users')
-      .where({ username})
+      .where({ username })
       .first()
       .then(user => !!user)
   },
 
-  insertUser(db, newUser) {
-    return db
-      .insert(newUser)
+  insertUser(knex, newUser) {
+    return knex
+      .insert([newUser])
       .into('giftlist_users')
       .returning('*')
       .then(([user]) => user)

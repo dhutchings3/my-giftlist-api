@@ -1,102 +1,102 @@
-const path = require('path')
 const express = require('express')
-const xss = require('xss')
+const path = require('path')
 const ListsService = require('./lists-service')
-
 const listsRouter = express.Router()
-const jsonParser = express.json()
+const jsonBodyParser = express.json()
+const { requireAuth } = require('../middleware/jwt-auth')
 
-const serializeList = list => ({
-  id: list.id,
-  listname: xss(list.listname),
-  user_id: list.user_id,
-})
 
 listsRouter
   .route('/')
   .get((req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ListsService.getAllLists(knexInstance)
-      .then(lists => {
-        res.json(lists.map(serializeList))
+    ListsService.getAllListsItems(req.app.get('db'))
+      .then(items => {
+        res.json(items)
       })
       .catch(next)
   })
-  .post(jsonParser, (req, res, next) => {
-    const { listname, user_id } = req.body
-    const newList = { listname, user_id }
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    const { item_id, name } = req.body
+    const itemToAdd = { item_id, name }
 
-    for (const [key, value] of Object.entries(newList))
-      if (value == null)
+    for (const [key, value] of Object.entries(itemToAdd)) {
+      if (value == null) {
         return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
+          error: { message: `Missing '${key}' in request` }
         })
-    newList.listname = listname
-    ListsService.insertList(
-      req.app.get('db'),
-      newList
-    )
-      .then(list => {
+      }
+    }
+
+    itemToAdd.user_id = req.user.id
+
+    ListsService.addToList(req.app.get('db'), itemToAdd)
+      .then(item => {
+        return ListsService.getById(req.app.get('db'), item.id)
+      })
+      .then(item => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${list.id}`))
-          .json(serializeList(list))
+          .location(path.posix.join(req.originalUrl, `/${item.id}`))
+          .json(item)
       })
       .catch(next)
   })
 
-listsRouter
-  .route('/:list_id')
-  .all((req, res, next) => {
-    ListsService.getById(
-      req.app.get('db'),
-      req.params.list_id
-    )
-      .then(list => {
-        if (!list) {
-          return res.status(404).json({
-            error: { message: `List doesn't exist` }
+
+  listsRouter
+    .route('/:lists_item_id')
+    .all(requireAuth)
+    .all(checkListsItemExists)
+    .get((req, res, next) => {
+      ListsService.getById(req.app.get('db'), req.params.lists_item_id)
+      .then(items => {
+        res.json(items)
+      })
+      .catch(next)
+    })
+
+    .patch(jsonBodyParser, (req, res, next) => {
+      const { item } = req.body
+      const itemUpdate = { item }
+      const numValues = Object.values(itemUpdate).filter(Boolean).length
+        if (numValues === 0) {
+          return res.status(400).json({
+            error: { message: 'Request must contain either user id, or item id' },
           })
         }
-        res.list = list
-        next()
-      })
-      .catch(next)
-  })
-  .get((req, res, next) => {
-    res.json(serializeList(res.list))
-  })
-  .delete((req, res, next) => {
-    ListsService.deleteList(
-      req.app.get('db'),
-      req.params.list_id
-    )
-      .then(numRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
-  .patch(jsonParser, (req, res, next) => {
-    const { listname, user_id } = req.body
-    const listToUpdate = { listname, user_id }
+        ListsService.updateListsItem(req.app.get('db'), req.params.lists_item_id, itemUpdate)
+          .then(() => {
+            res.status(204).end()
+          })
+          .catch(next)
+    })
 
-    const numberOfValues = Object.values(listToUpdate).filter(Boolean).length
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain 'listname'`
-        }
-      })
+    .delete(jsonBodyParser, (req, res, next) => {
+      const { lists_item_id } = req.params
+      ListsService.deleteListsItem(req.app.get('db'), lists_item_id)
+        .then(() => {
+          res.status(204).end()
+        })
+        .catch(next)
+    })
 
-    ListsService.updateList(
-      req.app.get('db'),
-      req.params.list_id,
-      listToUpdate
-    )
-      .then(numRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
+  /* async/await syntax for promises */
+  async function checkListsItemExists(req, res, next) {
+    try {
+      const listsItem = await ListsService.getById(
+        req.app.get('db'),
+        req.params.lists_item_id
+      )
+      if (!listsItem)
+        return res.status(404).json({
+          error: `Item doesn't exist`
+        })
+
+      res.bookshelfItem = bookshelfItem
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
 
 module.exports = listsRouter

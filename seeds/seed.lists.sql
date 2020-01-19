@@ -1,11 +1,11 @@
 INSERT INTO giftlist_users (id, username, name, password) VALUES
-(1, 'Dee','Danielle','password'),
-(2, 'Mike','Michael','password'),
-(3, 'Ash','Ashley','password'),
-(4, 'Steph','Stephanie','password'),
-(5, 'Hal','Haley','password'),
-(6, 'RJ','Ryan','password'),
-(7, 'Pat','Patrick','password');
+(1, 'Dee','Danielle','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(2, 'Mike','Michael','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(3, 'Ash','Ashley','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(4, 'Steph','Stephanie','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(5, 'Hal','Haley','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(6, 'RJ','Ryan','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6'),
+(7, 'Pat','Patrick','$2a$12$TNjdWXBhzjBkX0ZutpZ92ermr6kBG55tmu9ZdAshuFdCsaSWsqfs6');
   
 INSERT INTO giftlist_lists (listname, user_id)
 VALUES

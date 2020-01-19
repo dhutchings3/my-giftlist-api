@@ -51,23 +51,23 @@ describe('Users Endpoints', function() {
     },
   ]
 
-  before('make knex instance', () => {
-    db = knex({
-      client: 'pg',
-      connection: process.env.TEST_DATABASE_URL,
-    })
-    helpers.cleanTables(db)
-    return db('giftlist_users')
-        .then(() => {
-            return db.into('giftlist_users').insert(testUsers)
-        })
-  })
+  // before('make knex instance', () => {
+  //   db = knex({
+  //     client: 'pg',
+  //     connection: process.env.TEST_DATABASE_URL,
+  //   })
+  //   helpers.cleanTables(db)
+  //   return db('giftlist_users')
+  //       .then(() => {
+  //           return db.into('giftlist_users').insert(testUsers)
+  //       })
+  // })
 
-  after('disconnect from db', () => db.destroy())
+  // after('disconnect from db', () => db.destroy())
 
-  before('cleanup', () => helpers.cleanTables(db))
+  // before('cleanup', () => helpers.cleanTables(db))
 
-  afterEach('cleanup', () => helpers.cleanTables(db))
+  // afterEach('cleanup', () => helpers.cleanTables(db))
 
   describe.skip(`POST /api/users`, () => {
     context(`Happy path`, () => {

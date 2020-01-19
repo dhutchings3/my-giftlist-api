@@ -1,51 +1,56 @@
+const ListsService = require('../src/lists/lists-service')
 const knex = require('knex')
 const app = require('../src/app')
-const { makeListsArray, makeUsersArray } = require('./test-helpers')
+const helpers = require('./test-helpers')
 
-describe('Lists Endpoints', function() {
+describe(`Lists service object`, function() {
   let db
 
-  before('make knex instance', () => {
+  const {
+    testUsers,
+    testLists,
+    testListsItems,
+    testUpdatedLists,
+  } = helpers.makeFixtures()
 
+  before('make knex instance', () => {
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DATABASE_URL,
     })
     app.set('db', db)
-
   })
 
-  after('disconnect from db', () => db.destroy())
+  // before('cleanup', () => {
 
-  before('clean the table', () => db.raw('TRUNCATE giftlist_lists, giftlist_users, giftlist_lists RESTART IDENTITY CASCADE'))
+  //   return db.raw(
+  //     `TRUNCATE
+  //       giftlist_lists,
+  //       giftlist_items,
+  //       giftlist_users
+  //       CASCADE
+  //     `
+  //   )
+  //   .then(() => {
+  //     console.log('before adding')
+  //     return db.into("giftlist_users").insert(testUsers)
+  //   })
+  //   .then(() => {
+  //     return db.into("giftlist_lists").insert(testLists)
+  //   })
+  //   .then(() => {
+  //     return db.into("giftlist_items").insert(testListsItems)
+  //   })
+  //   .then(() => {
+  //     console.log("after adding")
+  //   })
+  // })
 
-  afterEach('cleanup',() => db.raw('TRUNCATE giftlist_lists, giftlist_users, giftlist_lists RESTART IDENTITY CASCADE'))
+  // after(() => db.destroy());
 
   describe(`GET /api/lists`, () => {
-    context(`Given no lists`, () => {
-      it(`responds with 200 and an empty list`, () => {
-        return supertest(app)
-          .get('/api/lists')
-          .expect(200, [])
-      })
-    })
-
     context('Given there are lists in the database', () => {
-      const testUsers = makeUsersArray();
-      const testLists = makeListsArray();
-
-      beforeEach('insert lists', () => {
-        return db
-          .into('giftlist_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('giftlist_lists')
-              .insert(testLists)
-          })
-      })
-
-      it('responds with 200 and all of the lists', () => {
+      it(`responds with 200 and all of the lists`, () => {
         return supertest(app)
           .get('/api/lists')
           .expect(200, testLists)
@@ -53,210 +58,62 @@ describe('Lists Endpoints', function() {
     })
   })
 
-  describe(`GET /api/lists/:list_id`, () => {
-    context(`Given no lists`, () => {
-      it(`responds with 404`, () => {
-        const listId = 123456
-        return supertest(app)
-          .get(`/api/lists/${listId}`)
-          .expect(404, { error: { message: `List doesn't exist` } })
-      })
-    })
-
-    context('Given there are lists in the database', () => {
-      const testUsers = makeUsersArray();
-      const testLists = makeListsArray()
-
-      beforeEach('insert lists', () => {
-        return db
-          .into('giftlist_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('giftlist_lists')
-              .insert(testLists)
-          })
-      })
-
-      it('responds with 200 and the specified list', () => {
-        const listId = 2
-        const expectedList = testLists[listId - 1]
-        return supertest(app)
-          .get(`/api/lists/${listId}`)
-          .expect(200, expectedList)
-      })
-    })
-  })
-
-  describe(`POST /api/lists`, () => {
-    const testUsers = makeUsersArray();
-    beforeEach('insert malicious list', () => {
-      return db
-        .into('giftlist_users')
-        .insert(testUsers)
-    })
-
-    it(`creates a list, responding with 201 and the new list`, () => {
-      const newList = {
-        listname: 'Test new list',
-        user_id: 1,
+  describe('POST /api/lists', () => {
+    it(`adds item to list, responding with 204`, () => {
+      const testListsItem = testListsItems[10]
+      const name = testListsItems[10].name
+      const itemToAdd = {
+        list_id: testListsItem.list_id,
+        name: name,
       }
       return supertest(app)
         .post('/api/lists')
-        .send(newList)
-        .expect(201)
-        .expect(res => {
-          expect(res.body.listname).to.eql(newList.listname)
-          expect(res.body).to.have.property('id')
-          expect(res.headers.location).to.eql(`/api/lists/${res.body.id}`)
-        })
-        .then(res =>
-          supertest(app)
-            .get(`/api/lists/${res.body.id}`)
-            .expect(res.body)
-        )
-    })
-
-    const requiredFields = ['listname']
-
-    requiredFields.forEach(field => {
-      const newList = {
-        listname: 'Test new list',
-      }
-
-      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
-        delete newList[field]
-
-        return supertest(app)
-          .post('/api/lists')
-          .send(newList)
-          .expect(400, {
-            error: { message: `Missing '${field}' in request body` }
-          })
-      })
+        .send(itemToAdd)
     })
   })
 
-  describe(`DELETE /api/lists/:list_id`, () => {
-    context(`Given no lists`, () => {
-      it(`responds with 404`, () => {
-        const listId = 123456
-        return supertest(app)
-          .delete(`/api/lists/${listId}`)
-          .expect(404, { error: { message: `List doesn't exist` } })
-      })
-    })
+  // describe(`GET /api/lists/:lists_list_id`, () => {
+  //   context(`Given no list items`, () => {
+  //     it(`responds with 404`, () => {
+  //       const listsItemId = 123
+  //       return supertest(app)
+  //         .get(`/api/lists/${listsItemId}`)
+  //         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+  //         .expect(404, { error: `List item doesn't exist` })
+  //     })
+  //   })
+  //   context('Given there are list items in the database', () => {
+  //     it('responds with 200 and the specified list item', () => {
+  //       const listsItemId = 1
+  //       const testListsItem = testListsItems[0]
+  //       return supertest(app)
+  //         .get(`/api/list${listsItemId}`)
+  //         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+  //         .expect(200, testListsItem)
+  //     })
+  //   })
+  // })
 
-    context('Given there are lists in the database', () => {
-      const testUsers = makeUsersArray();
-      const testLists = makeListsArray()
 
-      beforeEach('insert lists', () => {
-        return db
-          .into('giftlist_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('giftlist_lists')
-              .insert(testLists)
-          })
-      })
-
-      it('responds with 204 and removes the list', () => {
-        const idToRemove = 2
-        const expectedLists = testLists.filter(list => list.id !== idToRemove)
-        return supertest(app)
-          .delete(`/api/lists/${idToRemove}`)
-          .expect(204)
-          .then(res =>
-            supertest(app)
-              .get(`/api/lists`)
-              .expect(expectedLists)
-          )
-      })
+  describe(`updateListsItem()`, () => {
+    it(`responds 204 when updated list is submitted`, () => {
+      return supertest(app)
+        .patch(`/api/lists/1`)
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .send({ name: 'test item name' })
+        .expect(204)
     })
   })
 
-  describe(`PATCH /api/lists/:list_id`, () => {
-    context(`Given no lists`, () => {
-      it(`responds with 404`, () => {
-        const listId = 123456
-        return supertest(app)
-          .delete(`/api/lists/${listId}`)
-          .expect(404, { error: { message: `List doesn't exist` } })
-      })
-    })
-
-    context('Given there are lists in the database', () => {
-      const testUsers = makeUsersArray();
-      const testLists = makeListsArray()
-
-      beforeEach('insert lists', () => {
-        return db
-          .into('giftlist_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('giftlist_lists')
-              .insert(testLists)
-          })
-      })
-
-      it('responds with 204 and updates the list', () => {
-        const idToUpdate = 2
-        const updateList = {
-          listname: 'updated list listname',
-        }
-        const expectedList = {
-          ...testLists[idToUpdate - 1],
-          ...updateList
-        }
-        return supertest(app)
-          .patch(`/api/lists/${idToUpdate}`)
-          .send(updateList)
-          .expect(204)
-          .then(res =>
-            supertest(app)
-              .get(`/api/lists/${idToUpdate}`)
-              .expect(expectedList)
-          )
-      })
-
-      it(`responds with 400 when no required fields supplied`, () => {
-        const idToUpdate = 2
-        return supertest(app)
-          .patch(`/api/lists/${idToUpdate}`)
-          .send({ irrelevantField: 'foo' })
-          .expect(400, {
-            error: {
-              message: `Request body must contain 'listname'`
-            }
-          })
-      })
-
-      it(`responds with 204 when updating only a subset of fields`, () => {
-        const idToUpdate = 2
-        const updateList = {
-          listname: 'updated list listname',
-        }
-        const expectedList = {
-          ...testLists[idToUpdate - 1],
-          ...updateList
-        }
-
-        return supertest(app)
-          .patch(`/api/lists/${idToUpdate}`)
-          .send({
-            ...updateList,
-            fieldToIgnore: 'should not be in GET response'
-          })
-          .expect(204)
-          .then(res =>
-            supertest(app)
-              .get(`/api/lists/${idToUpdate}`)
-              .expect(expectedList)
-          )
-      })
+  describe(`DELETE api/lists/:lists_item_id`, () => {
+    console.log(testUsers[0])
+    it('responds with 204', () => {
+      console.log(testUsers[0])
+      const listsItemId = 1
+      return supertest(app)
+        .delete(`/api/lists/${listsItemId}`)
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .expect(204)
     })
   })
 })

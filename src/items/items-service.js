@@ -1,6 +1,6 @@
 const ItemsService = {
     getAllItems(knex) {
-      return knex.select('*').from('giftlist_items')
+      return knex.select('*').from('giftlist_items').where('id', id)
     },
   
     insertItem(knex, newItem) {
