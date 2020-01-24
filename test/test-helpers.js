@@ -3,7 +3,12 @@ const jwt = require('jsonwebtoken')
 
 function makeUsersArray() {
     return [
-        { username: "dhutch3", password: "password", first_name: "Danielle" }
+        { 
+          id: 1, 
+          username: "dhutch3", 
+          password: "password", 
+          first_name: "Danielle" 
+        }
         // { username: "MikeObs", password: "password", name: "Mike" },
         // { username: "Ash", password: "password", name: "Ashley" },
         // { username: "Steph", password: "password", name: "Stephanie" },
@@ -99,13 +104,6 @@ function cleanTables(db) {
       password: bcrypt.hashSync(user.password, 1)
     }))
     return db.into('giftlist_users').insert(preppedUsers)
-      .then(() =>
-        // update the auto sequence to stay in sync
-        db.raw(
-          `SELECT setval('giftlist_users_id_seq', ?)`,
-          [users[users.length - 1].id]
-        )
-      )
   }
 
 

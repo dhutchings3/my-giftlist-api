@@ -44,7 +44,7 @@ listRouter
 
   listRouter
     .route('/:list_item_id')
-    .all(requireAuth)
+    // .all(requireAuth)
     .all(checkListItemExists)
     .get((req, res, next) => {
       ListService.getById(req.app.get('db'), req.params.list_item_id)
