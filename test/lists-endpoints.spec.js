@@ -1,4 +1,4 @@
-const ListsService = require('../src/lists/lists-service')
+// const ListService = require('../src/list/list-service')
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
@@ -8,9 +8,10 @@ describe(`Lists service object`, function() {
 
   const {
     testUsers,
-    testLists,
-    testListsItems,
-    testUpdatedLists,
+    testList,
+    //testItems,
+    testListItems,
+    // testUpdatedList,
   } = helpers.makeFixtures()
 
   before('make knex instance', () => {
@@ -25,10 +26,9 @@ describe(`Lists service object`, function() {
 
   //   return db.raw(
   //     `TRUNCATE
-  //       giftlist_lists,
-  //       giftlist_items,
-  //       giftlist_users
-  //       CASCADE
+  //       giftlist_list,
+  //       giftlist_users,
+  //       giftlist_items
   //     `
   //   )
   //   .then(() => {
@@ -36,7 +36,7 @@ describe(`Lists service object`, function() {
   //     return db.into("giftlist_users").insert(testUsers)
   //   })
   //   .then(() => {
-  //     return db.into("giftlist_lists").insert(testLists)
+  //     return db.into("giftlist_list").insert(testList)
   //   })
   //   .then(() => {
   //     return db.into("giftlist_items").insert(testListsItems)
@@ -48,72 +48,37 @@ describe(`Lists service object`, function() {
 
   // after(() => db.destroy());
 
-  describe(`GET /api/lists`, () => {
-    context('Given there are lists in the database', () => {
-      it(`responds with 200 and all of the lists`, () => {
-        return supertest(app)
-          .get('/api/lists')
-          .expect(200, testLists)
-      })
-    })
-  })
-
-  describe('POST /api/lists', () => {
-    it(`adds item to list, responding with 204`, () => {
-      const testListsItem = testListsItems[10]
-      const name = testListsItems[10].name
-      const itemToAdd = {
-        list_id: testListsItem.list_id,
-        name: name,
-      }
-      return supertest(app)
-        .post('/api/lists')
-        .send(itemToAdd)
-    })
-  })
-
-  // describe(`GET /api/lists/:lists_list_id`, () => {
-  //   context(`Given no list items`, () => {
-  //     it(`responds with 404`, () => {
-  //       const listsItemId = 123
+  // describe(`GET /api/list`, () => {
+  //   context('Given there are lists in the database', () => {
+  //     it(`responds with 200 and all of the lists`, () => {
   //       return supertest(app)
-  //         .get(`/api/lists/${listsItemId}`)
-  //         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-  //         .expect(404, { error: `List item doesn't exist` })
-  //     })
-  //   })
-  //   context('Given there are list items in the database', () => {
-  //     it('responds with 200 and the specified list item', () => {
-  //       const listsItemId = 1
-  //       const testListsItem = testListsItems[0]
-  //       return supertest(app)
-  //         .get(`/api/list${listsItemId}`)
-  //         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-  //         .expect(200, testListsItem)
+  //         .get('/api/list')
+  //         .expect(200, testListItems)
   //     })
   //   })
   // })
 
-
-  describe(`updateListsItem()`, () => {
-    it(`responds 204 when updated list is submitted`, () => {
+  describe(`POST /api/list`, () => {
+    it(`adds item to list, responding with 204`, () => {
+      const testListItem = testListItems[0]
+      const itemToAdd = {
+        list_id: testListItem.list_id
+      }
       return supertest(app)
-        .patch(`/api/lists/1`)
-        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-        .send({ name: 'test item name' })
-        .expect(204)
+        .post('/api/list')
+        .send(itemToAdd)
     })
   })
 
-  describe(`DELETE api/lists/:lists_item_id`, () => {
-    console.log(testUsers[0])
+  describe(`DELETE api/list/:list_item_id`, () => {
+    console.log(helpers.makeAuthHeader(testUsers[0]))
     it('responds with 204', () => {
-      console.log(testUsers[0])
-      const listsItemId = 1
+      const listItemId = 1
       return supertest(app)
-        .delete(`/api/lists/${listsItemId}`)
+        .delete(`/api/list/${listItemId}`)
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .expect(204)
     })
+    console.log(helpers.makeAuthHeader(testUsers[0]))
   })
 })

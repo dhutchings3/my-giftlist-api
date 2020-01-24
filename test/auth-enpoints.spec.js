@@ -10,37 +10,37 @@ describe('Auth Endpoints', function() {
     {
       username: 'dhutch3',
       password: 'password',
-      name: 'Danielle'
+      first_name: 'Danielle'
     },
     {
       username: 'MikeObs',
       password: 'password',
-      name: 'Mike'
+      first_name: 'Mike'
     },
     {
       username: 'Ash',
       password: 'password',
-      name: 'Ashley'
+      first_name: 'Ashley'
     },
     {
       username: 'Steph',
       password: 'password',
-      name: 'Stephanie'
+      first_name: 'Stephanie'
     },
     {
       username: 'Pat',
       password: 'password',
-      name: 'Patrick'
+      first_name: 'Patrick'
     },
     {
       username: 'Sam',
       password: 'password',
-      name: 'Samantha'
+      first_name: 'Samantha'
     },
     {
       username: 'Demo',
       password: 'password',
-      name: 'Demo'
+      first_name: 'Demo'
     },
   ]
 
@@ -58,7 +58,7 @@ describe('Auth Endpoints', function() {
     return db.raw(
       `TRUNCATE
         giftlist_users,
-        giftlist_lists,
+        giftlist_list,
         giftlist_items
       `
     )

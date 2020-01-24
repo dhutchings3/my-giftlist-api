@@ -1,5 +1,5 @@
 const express = require('express')
-const ItemService = require('./items-service')
+const ItemsService = require('./items-service')
 const itemsRouter = express.Router()
 
 itemsRouter

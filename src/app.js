@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
-const listsRouter = require('./lists/lists-router')
+const listRouter = require('./list/list-router')
 const usersRouter = require('./users/users-router')
 const itemsRouter = require('./items/items-router')
 const authRouter = require('./auth/auth-router')
@@ -19,7 +19,7 @@ app.use(morgan(morganOption))
 app.use(cors())
 app.use(helmet())
 
-app.use("/api/lists", listsRouter);
+app.use("/api/list", listRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/auth", authRouter);
