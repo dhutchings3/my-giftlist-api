@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 function makeUsersArray() {
     return [
         { 
-          id: 1, 
           username: "dhutch3", 
           password: "password", 
           first_name: "Danielle" 
