@@ -73,7 +73,6 @@ describe('Auth Endpoints', function() {
         username: testUser.username,
         password: testUser.password,
       }
-      console.log(userValidCreds)
       const expectedToken = jwt.sign(
         { user_id: testUser.id },
         process.env.JWT_SECRET,

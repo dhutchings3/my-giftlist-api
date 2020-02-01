@@ -9,12 +9,15 @@ describe(`Lists service object`, function() {
   const {
     testUsers,
     testList,
-    //testItems,
+    testItems,
     testListItems,
     // testUpdatedList,
   } = helpers.makeFixtures()
 
+  console.log(testListItems)
+
   before('make knex instance', () => {
+    console.log(testListItems, 'test list items')
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DATABASE_URL,
@@ -22,41 +25,42 @@ describe(`Lists service object`, function() {
     app.set('db', db)
   })
 
-  // before('cleanup', () => {
+  before('cleanup', () => {
 
-  //   return db.raw(
-  //     `TRUNCATE
-  //       giftlist_list,
-  //       giftlist_users,
-  //       giftlist_items
-  //     `
-  //   )
-  //   .then(() => {
-  //     console.log('before adding')
-  //     return db.into("giftlist_users").insert(testUsers)
-  //   })
-  //   .then(() => {
-  //     return db.into("giftlist_list").insert(testList)
-  //   })
-  //   .then(() => {
-  //     return db.into("giftlist_items").insert(testListsItems)
-  //   })
-  //   .then(() => {
-  //     console.log("after adding")
-  //   })
-  // })
+  return db.raw(
+      `TRUNCATE
+        giftlist_users,
+        giftlist_items,
+        giftlist_list
+        RESTART IDENTITY CASCADE  
+        `
+    )
+    .then(() => {
+      console.log('before adding')
+      return db.into("giftlist_items").insert(testItems)
+    })
+    .then(() => {
+      return db.into("giftlist_list").insert(testList)
+    })
+    .then(() => {
+      return db.into("giftlist_users").insert(testUsers)
+    })
+    .then(() => {
+      console.log("after adding")
+    })
+  })
 
-  // after(() => db.destroy());
+  after(() => db.destroy());
 
-  // describe(`GET /api/list`, () => {
-  //   context('Given there are lists in the database', () => {
-  //     it(`responds with 200 and all of the lists`, () => {
-  //       return supertest(app)
-  //         .get('/api/list')
-  //         .expect(200, testListItems)
-  //     })
-  //   })
-  // })
+  describe(`GET /api/list`, () => {
+    context('Given there are lists in the database', () => {
+      it(`responds with 200 and all of the lists`, () => {
+        return supertest(app)
+          .get('/api/list')
+          .expect(200, testListItems)
+      })
+    })
+  })
 
   describe(`POST /api/list`, () => {
     it(`adds item to list, responding with 204`, () => {
@@ -73,12 +77,12 @@ describe(`Lists service object`, function() {
   describe(`DELETE api/list/:list_item_id`, () => {
     console.log(helpers.makeAuthHeader(testUsers[0]))
     it('responds with 204', () => {
-      const listItemId = 1
+      console.log(helpers.makeAuthHeader(testUsers[0]))
+      const list_item_id = 1
       return supertest(app)
-        .delete(`/api/list/${listItemId}`)
+        .delete(`/api/list/${list_item_id}`)
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .expect(204)
     })
-    console.log(helpers.makeAuthHeader(testUsers[0]))
   })
 })

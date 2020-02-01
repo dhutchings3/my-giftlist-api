@@ -1,46 +1,15 @@
 // const xss = require('xss')
-const xss = require('xss')
 
 const ListService = {
 
-  getAllListItems(db) {
+  getAllListItems(db, user_id) {
     return db
-      .from('giftlist_list AS list')
-      .select(
-        'list.id',
-        'list.user_id',
-        'list.item_id',
-        db.raw(
-          `json_strip_nulls(
-            json_build_object(
-              'id', usr.id,
-              'username', usr.username,
-              'first_name', usr.first_name
-            )
-          ) AS "giftlist_user"`
-        ),
-        db.raw(
-          `json_strip_nulls(
-            json_build_object(
-              'id', items.id,
-              'item_name', items.item_name,
-              'graphic', items.graphic,
-              'link', items.link
-            )
-          ) AS "items"`
-        )
-      )
-      .leftJoin(
-        'giftlist_items AS items',
-        'list.item_id',
-        'items.id'
-      )
-      .leftJoin(
-        'giftlist_users AS usr',
-        'usr.id',
-        'list.user_id'
-      )
-      .groupBy('items.id', 'usr.id', 'list.id')
+      .from('giftlist_list')
+      .select('*')
+      .where({ user_id })
+      .then(rows => {
+        return rows
+      })
   },
 
   getById(db, id) {
@@ -64,17 +33,6 @@ const ListService = {
       .where('id', id)
       .delete()
   },
-
-  serializeListItem(listItem) {
-    const { giftlist_user, usr } = listItem
-    return {
-      id: listItem.id,
-      item_name: listItem.item_name,
-      graphic: listItem.graphic,
-      link: listItem.link
-    }
-  },
-
 }
 
 module.exports = ListService
