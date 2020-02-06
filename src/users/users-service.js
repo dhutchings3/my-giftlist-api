@@ -18,6 +18,14 @@ const UsersService = {
       .then(([user]) => user)
   },
 
+  getById(knex, id) {
+    return knex
+      .from('giftlist_users')
+      .select('*')
+      .where('id', id)
+      .first()
+  },
+
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password must be longer than 8 characters'

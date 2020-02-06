@@ -14,10 +14,8 @@ describe(`Lists service object`, function() {
     // testUpdatedList,
   } = helpers.makeFixtures()
 
-  console.log(testListItems)
 
   before('make knex instance', () => {
-    console.log(testListItems, 'test list items')
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DATABASE_URL,
@@ -36,17 +34,15 @@ describe(`Lists service object`, function() {
         `
     )
     .then(() => {
-      console.log('before adding')
+      return db.into("giftlist_users").insert(testUsers)
+    })
+    .then(() => {
       return db.into("giftlist_items").insert(testItems)
     })
     .then(() => {
       return db.into("giftlist_list").insert(testList)
     })
     .then(() => {
-      return db.into("giftlist_users").insert(testUsers)
-    })
-    .then(() => {
-      console.log("after adding")
     })
   })
 
@@ -75,9 +71,7 @@ describe(`Lists service object`, function() {
   })
 
   describe(`DELETE api/list/:list_item_id`, () => {
-    console.log(helpers.makeAuthHeader(testUsers[0]))
     it('responds with 204', () => {
-      console.log(helpers.makeAuthHeader(testUsers[0]))
       const list_item_id = 1
       return supertest(app)
         .delete(`/api/list/${list_item_id}`)

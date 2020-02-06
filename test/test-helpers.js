@@ -26,7 +26,8 @@ function makeListArray(users, items) {
 function makeListItemsArray(users, items) {
   return [
     {
-      giftlist_user: { first_name: 'Danielle', id: 1, username: 'dhutch3' },
+      id: 1,
+      giftlist_user: { id: 1, username: 'dhutch3', first_name: 'Danielle' },
       user_id: users[0].id,
       item_id: items[0].id,
       items: {

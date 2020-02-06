@@ -2,19 +2,20 @@ const express = require('express')
 const path = require('path')
 const ListService = require('./list-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const UsersService = require('../users/users-service')
 
 const listRouter = express.Router()
 const jsonBodyParser = express.json()
 
 listRouter
   .route('/')
-  .get(requireAuth, (req, res, next) => {
-    ListService.getAllListItems(req.app.get('db'), req.user.id)
-      .then(items => {
-        console.log(items, 'items list')
-        res.json(items)
-      })
-      .catch(next)
+  .get((req, res, next) => {
+    ListService.getAllListItemsById(req.app.get('db'), req.params.user_id)
+    .then(items => {
+      console.log(items, 'items list after')
+      res.json(items)
+    })
+    .catch(next)
   })
 
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
@@ -43,17 +44,21 @@ listRouter
       .catch(next)
   })
 
-  .delete(requireAuth, (req, res, next) => {
-    const { list_item_id } = req.params
-    ListService.deleteListItem(req.app.get('db'), list_item_id)
-      .then(() => {
+  listRouter
+  .route('/:item_id')
+  .delete((req, res, next) => {
+// console.log(req.params)
+const { item_id } = req.params
+console.log(item_id)
+    ListService.deleteListItem(
+      req.app.get('db'),
+      req.params.item_id)
+
+      .then(item => {
         res.status(204).end()
       })
       .catch(next)
   })
-
-  listRouter
-  .route('/browseitems')
 
   // listRouter
   //   .route('/:list_item_id')
