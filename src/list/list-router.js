@@ -19,8 +19,9 @@ listRouter
   })
 
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, user_id, item_id } = req.body
-    const itemToAdd = { id, user_id, item_id }
+    
+    const { item_id } = req.body
+    const itemToAdd = { item_id }
 
     for (const [key, value] of Object.entries(itemToAdd)) {
       if (value == null) {
@@ -31,6 +32,7 @@ listRouter
     }
 
     itemToAdd.user_id = req.user.id
+    console.log(req.user)
 
     ListService.addToList(
     req.app.get('db'), 
