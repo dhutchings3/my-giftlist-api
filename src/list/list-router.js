@@ -10,6 +10,7 @@ const jsonBodyParser = express.json()
 listRouter
   .route('/')
   .get((req, res, next) => {
+    console.log(req.params.user_id)
     ListService.getAllListItemsById(req.app.get('db'), req.params.user_id)
     .then(items => {
       console.log(items, 'items list after')

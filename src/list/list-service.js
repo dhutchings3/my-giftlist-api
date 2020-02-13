@@ -40,7 +40,7 @@ const ListService = {
         'list.user_id'
       )
       .groupBy('items.id', 'usr.id', 'list.id')
-      // .where('user_id', user_id)
+      .where('user_id', user_id)
   },
 
   getListByUserId(db, user_id) {
