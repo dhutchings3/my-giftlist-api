@@ -10,8 +10,9 @@ const jsonBodyParser = express.json()
 listRouter
   .route('/')
   .get((req, res, next) => {
-    console.log(req.params.user_id)
+    // console.log(user_id, 'user id')
     ListService.getAllListItemsById(req.app.get('db'), req.params.user_id)
+    // console.log(req.user_id, 'user id after')
     .then(items => {
       console.log(items, 'items list after')
       res.json(items)
@@ -62,46 +63,5 @@ console.log(item_id)
       })
       .catch(next)
   })
-
-  // listRouter
-  //   .route('/:list_item_id')
-  //   .all(requireAuth)
-  //   // .all(checkListItemExists)
-  //   // .get((req, res, next) => {
-  //   //   ListService.getById(req.app.get('db'), req.params.list_item_id)
-  //   //   .then(items => {
-  //   //     res.json(items)
-  //   //   })
-  //   //   .catch(next)
-  //   // })
-  //   .delete(jsonBodyParser, (req, res, next) => {
-  //     const { list_item_id } = req.params
-  //     ListService.deleteListItem(req.app.get('db'), list_item_id)
-  //       .then(() => {
-  //         res.status(204).end()
-  //       })
-  //       .catch(next)
-  //   })
-
-  /* async/await syntax for promises */
-  // async function checkListItemExists(req, res, next) {
-  //   try {
-  //     const listItem = await ListService.getById(
-  //       req.app.get('db'),
-  //       req.params.list_item_id
-  //     )
-  //     if (!listItem)
-  //       return res.status(404).json({
-  //         error: `List item doesn't exist`
-  //       })
-
-  //     res.listItem = listItem
-  //     next()
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
-
-
 
 module.exports = listRouter

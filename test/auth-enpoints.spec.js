@@ -53,7 +53,7 @@ describe('Auth Endpoints', function() {
     })
 
     it(`responds 400 'invalid username or password' when bad username`, () => {
-      const userInvalidUser = { username: 'user-not', password: 'existy' }
+      const userInvalidUser = { username: 'no-username', password: 'in-valid' }
       return supertest(app)
         .post('/api/auth/login')
         .send(userInvalidUser)
@@ -86,6 +86,7 @@ describe('Auth Endpoints', function() {
         .send(userValidCreds)
         .expect(200, {
           authToken: expectedToken,
+          user_id: 1
         })
     })
   })
