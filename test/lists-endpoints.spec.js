@@ -53,6 +53,7 @@ describe(`Lists service object`, function() {
       it(`responds with 200 and all of the lists`, () => {
         return supertest(app)
           .get('/api/list')
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .expect(200, testListItems)
       })
     })

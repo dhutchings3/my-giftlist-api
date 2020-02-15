@@ -11,7 +11,7 @@ listRouter
   .route('/')
   .get((req, res, next) => {
     // console.log(user_id, 'user id')
-    ListService.getAllListItemsById(req.app.get('db'), req.params.user_id)
+    ListService.getAllListItemsById(req.app.get('db'), req.user.id)
     // console.log(req.user_id, 'user id after')
     .then(items => {
       console.log(items, 'items list after')
