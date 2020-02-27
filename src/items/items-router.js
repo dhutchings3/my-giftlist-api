@@ -1,6 +1,7 @@
 const express = require('express')
 const ItemsService = require('./items-service')
 const itemsRouter = express.Router()
+const jsonBodyParser = express.json()
 const og = require('open-graph')
 
 itemsRouter
@@ -13,32 +14,29 @@ itemsRouter
       .catch(next)
   })
 
-  .post(requireAuth, jsonBodyParser, (req, res, next) => {
+  .post(jsonBodyParser, (req, res, next) => {
     
     const { site_Url } = req.body
-    const itemToAdd = { newItem }
-    opengraph.getSiteInfo(site_Url, function(err, completeItem) {
-      const newItem = completeItem
-    }
-
-    for (const [key, value] of Object.entries(itemToAdd)) {
-      if (value == null) {
-        return res.status(400).json({
-          error: { message: `Missing '${key}' in request` }
-        })
-      } 
-    }
+    // const itemToAdd = { newItem }
+    og(site_Url, function(err, completeItem) {
+      console.log(completeItem)
+      const newItem = {
+        item_name: completeItem.title,
+        graphic: completeItem.image.url,
+        link: completeItem.url
+      }
 
     ItemsService.addToItems(
     req.app.get('db'), 
-    itemToAdd
+    newItem
     )
       .then(item => {
         res
           .status(201)
-          .send(itemToAdd)
+          .json(newItem)
       })
       .catch(next)
   })
-  
+})
+
 module.exports = itemsRouter
