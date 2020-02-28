@@ -19,7 +19,8 @@ itemsRouter
     const { site_Url } = req.body
     // const itemToAdd = { newItem }
     og(site_Url, function(err, completeItem) {
-      console.log(completeItem)
+      if (err) return res.json(err)
+      // console.log(completeItem)
       const newItem = {
         item_name: completeItem.title,
         graphic: completeItem.image.url,
