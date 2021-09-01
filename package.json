@@ -29,7 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.4",
     "morgan": "^1.9.1",
-    "open-graph": "^0.2.4",
+    "open-graph": "^0.2.6",
     "pg": "^7.14.0",
     "postgrator": "^3.11.0",
     "postman": "^0.2.0",
